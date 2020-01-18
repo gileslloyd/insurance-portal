@@ -11,7 +11,5 @@
 |
 */
 
-$router->get('status', 'StatusController@get');
-$router->get('download/search/{term}', 'DownloadController@search');
-$router->get('download/torrents', 'DownloadController@torrents');
-$router->post('download/torrents', 'DownloadController@add');
+$router->get('products', 'ProductController@all');
+$router->get('product/{id}', 'ProductController@get');

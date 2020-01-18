@@ -4,23 +4,30 @@ namespace App\Http\Controllers;
 
 use Laravel\Lumen\Routing\Controller as BaseController;
 use League\Container\Container;
-use League\Tactician\CommandBus;
+use Illuminate\Http\Response;
 
 class Controller extends BaseController
 {
-	/**
-	 * @var Container
-	 */
+    /**
+     * @var Container
+     */
     protected $container;
 
-	/**
-	 * @var CommandBus
-	 */
-    protected $command_bus;
-
     public function __construct()
-	{
-		$this->container = \Di\Container::instance();
-		$this->command_bus = \CommandBus::instance();
-	}
+    {
+        $this->container = \DI\Container::instance();
+    }
+
+    protected function apiResponse(array $content, int $code): Response
+    {
+        return new Response(
+            [
+                'meta' => [
+                    'code' => $code,
+                ],
+                'body' => $content,
+            ],
+            $code
+        );
+    }
 }
