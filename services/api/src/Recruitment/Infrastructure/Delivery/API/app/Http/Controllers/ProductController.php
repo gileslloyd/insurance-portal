@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Product\ProductService;
 use Base\DomainException;
 
@@ -17,7 +16,9 @@ class ProductController extends Controller
 
     public function __construct()
     {
-        $this->productService = \DI\Container::instance()->get('product_service');
+        parent::__construct();
+
+        $this->productService = $this->container->get('product_service');
     }
 
     public function all(Request $request)

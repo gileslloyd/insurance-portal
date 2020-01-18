@@ -8,6 +8,16 @@ use Illuminate\Http\Response;
 
 class Controller extends BaseController
 {
+    /**
+     * @var Container
+     */
+    protected $container;
+
+    public function __construct()
+    {
+        $this->container = \DI\Container::instance();
+    }
+
     protected function apiResponse(array $content, int $code): Response
     {
         return new Response(
