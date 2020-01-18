@@ -10,20 +10,41 @@
                 </div>
 
                 <div class="content">
-                    <div v-for="product in products">
-                        {{ product.name }}
-                    </div>
+
+                    <h1 class="loading subtitle is-5" v-show="loading">Fetching Products....</h1>
+
+                    <section class="product-list">
+
+                        <template v-for="product in products">
+                            <div class="product-item">{{ product.name }}</div>
+                            <div class="product-item"><a href="" @click.prevent="showDetails(product.id)">More Info</a></div>
+                        </template>
+
+                    </section>
                 </div>
             </div>
         </div>
 
         <modal v-show="modalIsVisible" @close="modalIsVisible = false">
 
-            <template v-slot:title>Product Title</template>
+            <template v-slot:title>{{ selectedProduct.name }}</template>
 
-            <ul>
-                <li> Product Info</li>
-            </ul>
+            <p>{{ selectedProduct.description }}</p>
+
+            <table class="table">
+                <tr>
+                    <td>Type</td>
+                    <td>{{ selectedProduct.type }}</td>
+                </tr>
+                <tr>
+                    <td>Suppliers</td>
+                    <td>
+                        <ul>
+                            <li v-for="supplier in selectedProduct.suppliers">{{ supplier }}</li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
 
         </modal>
 
@@ -43,12 +64,38 @@
 
         data() {
             return {
-                'products': [
-                    {name: 'Product 1'},
-                    {name: 'Product 2'},
-                ],
+                'products': [],
+                'modalIsVisible': false,
+                'loading': true,
+                'selectedProduct': {}
             }
         },
+
+        mounted () {
+            let self = this;
+
+            ApiClient.get(
+                'products',
+                function (response) {
+                    self.products = response.data.body;
+                    self.loading = false;
+                }
+            );
+        },
+
+        methods: {
+            showDetails(productId) {
+                let self = this;
+
+                ApiClient.get(
+                    'product/'+productId,
+                    function (response) {
+                        self.selectedProduct = response.data.body;
+                        self.modalIsVisible = true;
+                    }
+                );
+            }
+        }
     };
 
 </script>
@@ -66,7 +113,7 @@
 
     .product-card {
         background: #fff;
-        width: 24rem;
+        width: 35rem;
         box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.11);
     }
 
@@ -93,17 +140,18 @@
         font-size: 0.8rem;
     }
 
-    button {
-        cursor: pointer;
-        font-size: 1.2rem;
-        color: hsl(171, 100%, 41%);
-        border-radius: 4rem;
-        display: block;
+    .product-list {
+        display: grid;
         width: 100%;
-        background: transparent;
-        border: 2px solid hsl(171, 100%, 41%);
-        padding: 0.9rem 0 1.1rem;
-        transition: color .5s, border-color .5s;
+        grid-template-columns: 66.667% 33.334%;
+        row-gap: 1rem;
+    }
+
+    .product-item {
+    }
+
+    .table {
+        width: 100%;
     }
 
 </style>
