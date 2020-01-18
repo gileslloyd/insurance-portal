@@ -13,7 +13,7 @@ services:
       - "app"
 
   app:
-     image: php:7.4-fpm-alpine
+     image: php:7.3-fpm-alpine
      ports:
        - "9000:9000"
      volumes:

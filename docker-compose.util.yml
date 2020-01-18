@@ -4,7 +4,7 @@ volumes:
 
 services:
   composer:
-    image: prooph/composer:7.4
+    image: prooph/composer:7.3
     volumes:
       - ./services:/var/www/vhosts
     working_dir: /var/www/vhosts/api

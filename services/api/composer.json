@@ -3,7 +3,7 @@
     "description": "Recruitment Service",
     "type": "project",
     "require": {
-        "php": ">=7.4",
+        "php": ">=7.3",
         "akrabat/rka-content-type-renderer": "^1.0",
         "cableandcode/microservice-core": "dev-master",
         "doctrine/migrations": "^2.0@dev",
