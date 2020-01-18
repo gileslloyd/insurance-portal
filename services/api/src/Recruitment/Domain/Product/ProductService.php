@@ -5,15 +5,20 @@ namespace Product;
 
 class ProductService
 {
-	private ProductRepository $productRepository;
+	/**
+	 * @var ProductRepository
+	 */
+	private $productRepository;
 
 	public function __construct(ProductRepository $productRepository)
 	{
 		$this->productRepository = $productRepository;
 	}
 
-	public function getAll()
+	public function getAll(): ProductCollectionResponse
 	{
-		return $this->productRepository->getAll();
+		return new ProductCollectionResponse(
+			$this->productRepository->getAll()
+		);
 	}
 }

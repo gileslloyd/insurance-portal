@@ -5,15 +5,30 @@ namespace Product;
 
 class Product
 {
-	private string $id;
+	/**
+	 * @var string
+	 */
+	private $id;
 
-	private string $name;
+	/**
+	 * @var string
+	 */
+	private $name;
 
-	private string $description;
+	/**
+	 * @var string
+	 */
+	private $description;
 
-	private string $type;
+	/**
+	 * @var string
+	 */
+	private $type;
 
-	private array $suppliers;
+	/**
+	 * @var array
+	 */
+	private $suppliers;
 
 	public function __construct(
 		string $id,
@@ -67,5 +82,10 @@ class Product
 	public function getSuppliers(): array
 	{
 		return $this->suppliers;
+	}
+
+	public function toArray(): array
+	{
+		return get_object_vars($this);
 	}
 }
