@@ -5,22 +5,19 @@ namespace Infrastructure\Domain\Product;
 
 use Infrastructure\Domain\Base\BaseApiRepository;
 use Product\Product;
+use Product\ProductInfoUnavailableException;
 use Product\ProductRepository;
 
 class ApiProductRepository extends BaseApiRepository implements ProductRepository
 {
 	public function getAll(): array
 	{
-		try {
-			$products = [];
+		$products = [];
 
-			$list = $this->getFromApi('/recruitment-webservice/api/list', 'products') ?? [];
+		$list = $this->getFromApi('/recruitment-webservice/api/list', 'products') ?? [];
 
-			foreach ($list as $id => $name) {
-				$products[] = $this->getByID($id);
-			}
-		} catch (\Exception $e) {
-			var_dump($e->getMessage()); die;
+		foreach ($list as $id => $name) {
+			$products[] = $this->getByID($id);
 		}
 
 		return $products;

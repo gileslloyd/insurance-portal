@@ -13,7 +13,7 @@ class ResponseSanitizer
 	public function sanitizeArray(array $values): array
 	{
 		return array_map(
-			function($value) {
+			function ($value) {
 				return $this->sanitizeValue($value);
 			},
 			$values
