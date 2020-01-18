@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Infrastructure\Domain\Base;
 
+use Application\Api\ResponseSanitizer;
 use GuzzleHttp\Client;
 
 abstract class BaseApiRepository
@@ -12,14 +13,15 @@ abstract class BaseApiRepository
 	 */
 	protected $client;
 
-	const BASE_URL = 'https://www.itccompliance.co.uk';
+	/**
+	 * @var ResponseSanitizer
+	 */
+	protected $responseSanitizer;
 
-	public function __construct()
+	public function __construct(Client $client, ResponseSanitizer $responseSanitizer)
 	{
-		$this->client = new Client([
-			'base_uri' => self::BASE_URL,
-			'timeout'  => 2.0,
-		]);
+		$this->client = $client;
+		$this->responseSanitizer = $responseSanitizer;
 	}
 
 	protected function getFromApi(string $url): array
