@@ -14,7 +14,7 @@ class ApiProductRepository extends BaseApiRepository implements ProductRepositor
 		try {
 			$products = [];
 
-			$list = $this->getFromApi('/recruitment-webservice/api/list')['products'] ?? [];
+			$list = $this->getFromApi('/recruitment-webservice/api/list', 'products') ?? [];
 
 			foreach ($list as $id => $name) {
 				$products[] = $this->getByID($id);
@@ -28,7 +28,7 @@ class ApiProductRepository extends BaseApiRepository implements ProductRepositor
 
 	public function getByID(string $id): Product
 	{
-		$details = $this->getFromApi("/recruitment-webservice/api/info?id={$id}")[$id] ?? [];
+		$details = $this->getFromApi("/recruitment-webservice/api/info?id={$id}", $id) ?? [];
 
 		return new Product(
 			$id,

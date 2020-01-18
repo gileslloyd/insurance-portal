@@ -24,7 +24,7 @@ abstract class BaseApiRepository
 		$this->responseSanitizer = $responseSanitizer;
 	}
 
-	protected function getFromApi(string $url): array
+	protected function getFromApi(string $url, string $expectedRoot): array
 	{
 		do {
 			$data = (string) $this->client
@@ -32,8 +32,8 @@ abstract class BaseApiRepository
 				->getBody();
 
 			$data = json_decode($data, true);
-		} while (isset($data['error']));
+		} while (isset($data['error']) && !isset($data[$expectedRoot]));
 
-		return $data;
+		return $this->responseSanitizer->sanitizeArray($data[$expectedRoot]);
 	}
 }
