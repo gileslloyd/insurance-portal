@@ -21,4 +21,9 @@ class ProductService
 			$this->productRepository->getAll()
 		);
 	}
+
+	public function getByID(string $id): Product
+	{
+		return $this->productRepository->getByID($id);
+	}
 }

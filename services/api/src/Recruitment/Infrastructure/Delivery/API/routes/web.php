@@ -12,3 +12,4 @@
 */
 
 $router->get('products', 'ProductController@all');
+$router->get('product/{id}', 'ProductController@get');

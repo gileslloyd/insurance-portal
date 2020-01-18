@@ -34,7 +34,7 @@ abstract class BaseApiRepository
 					->get($url)
 					->getBody();
 
-				$data = json_decode($data, true);
+				$data = $this->inspectErrors(json_decode($data, true));
 			} while (isset($data['error']) && !isset($data[$expectedRoot]));
 
 			return $this->responseSanitizer->sanitizeArray($data[$expectedRoot]);
@@ -43,4 +43,6 @@ abstract class BaseApiRepository
 			throw new ProductInfoUnavailableException();
 		}
 	}
+
+	abstract protected function inspectErrors(array $response): array;
 }

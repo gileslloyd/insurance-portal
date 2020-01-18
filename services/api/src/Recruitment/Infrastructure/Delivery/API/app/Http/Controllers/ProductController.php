@@ -33,4 +33,18 @@ class ProductController extends Controller
             return $this->apiResponse(['error' => 'An unknown error occurred'], 500);
         }
     }
+
+    public function get($id)
+    {
+        try {
+            $product = $this->productService->getByID($id);
+
+            return $this->apiResponse($product->toArray(), 200);
+        } catch (DomainException $e) {
+            return $this->apiResponse(['error' => $e->getMessage()], $e->getHttpCode());
+        } catch (\Exception $e) {
+            // @todo Log this error
+            return $this->apiResponse(['error' => 'An unknown error occurred'], 500);
+        }
+    }
 }
