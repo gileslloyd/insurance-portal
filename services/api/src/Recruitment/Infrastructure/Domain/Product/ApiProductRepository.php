@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Infrastructure\Domain\Product;
@@ -11,40 +12,40 @@ use Product\ProductRepository;
 
 class ApiProductRepository extends BaseApiRepository implements ProductRepository
 {
-	const NOT_FOUND_ERROR = 'Unknown product ID';
+    private const NOT_FOUND_ERROR = 'Unknown product ID';
 
-	public function getAll(): array
-	{
-		$products = [];
+    public function getAll(): array
+    {
+        $products = [];
 
-		$list = $this->getFromApi('/recruitment-webservice/api/list', 'products') ?? [];
+        $list = $this->getFromApi('/recruitment-webservice/api/list', 'products') ?? [];
 
-		foreach ($list as $id => $name) {
-			$products[] = $this->getByID($id);
-		}
+        foreach ($list as $id => $name) {
+            $products[] = $this->getByID($id);
+        }
 
-		return $products;
-	}
+        return $products;
+    }
 
-	public function getByID(string $id): Product
-	{
-		$details = $this->getFromApi("/recruitment-webservice/api/info?id={$id}", $id) ?? [];
+    public function getByID(string $id): Product
+    {
+        $details = $this->getFromApi("/recruitment-webservice/api/info?id={$id}", $id) ?? [];
 
-		return new Product(
-			$id,
-			$details['name'] ?? '',
-			$details['description'] ?? '',
-			$details['type'] ?? '',
-			$details['suppliers'] ?? []
-		);
-	}
+        return new Product(
+            $id,
+            $details['name'] ?? '',
+            $details['description'] ?? '',
+            $details['type'] ?? '',
+            $details['suppliers'] ?? []
+        );
+    }
 
-	protected function inspectErrors(array $response): array
-	{
-		if (isset($response['error']) && ($response['error'] === static::NOT_FOUND_ERROR)) {
-			throw new ProductNotFoundException();
-		}
+    protected function inspectErrors(array $response): array
+    {
+        if (isset($response['error']) && ($response['error'] === static::NOT_FOUND_ERROR)) {
+            throw new ProductNotFoundException();
+        }
 
-		return $response;
-	}
+        return $response;
+    }
 }

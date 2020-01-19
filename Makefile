@@ -10,3 +10,6 @@ setup:
 
 test:
 	@docker-compose exec app ./vendor/bin/phpunit
+
+standards:
+	@docker-compose exec app ./vendor/bin/phpcs --standard=PSR12 --ignore=./src/Recruitment/Infrastructure/Delivery ./src

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Infrastructure\Domain\Base;
@@ -10,39 +11,39 @@ use Product\ProductInfoUnavailableException;
 
 abstract class BaseApiRepository
 {
-	/**
-	 * @var Client
-	 */
-	protected $client;
+    /**
+     * @var Client
+     */
+    protected $client;
 
-	/**
-	 * @var ResponseSanitizer
-	 */
-	protected $responseSanitizer;
+    /**
+     * @var ResponseSanitizer
+     */
+    protected $responseSanitizer;
 
-	public function __construct(Client $client, ResponseSanitizer $responseSanitizer)
-	{
-		$this->client = $client;
-		$this->responseSanitizer = $responseSanitizer;
-	}
+    public function __construct(Client $client, ResponseSanitizer $responseSanitizer)
+    {
+        $this->client = $client;
+        $this->responseSanitizer = $responseSanitizer;
+    }
 
-	protected function getFromApi(string $url, string $expectedRoot): array
-	{
-		try {
-			do {
-				$data = (string)$this->client
-					->get($url)
-					->getBody();
+    protected function getFromApi(string $url, string $expectedRoot): array
+    {
+        try {
+            do {
+                $data = (string)$this->client
+                    ->get($url)
+                    ->getBody();
 
-				$data = $this->inspectErrors(json_decode($data, true));
-			} while (isset($data['error']) && !isset($data[$expectedRoot]));
+                $data = $this->inspectErrors(json_decode($data, true));
+            } while (isset($data['error']) && !isset($data[$expectedRoot]));
 
-			return $this->responseSanitizer->sanitizeArray($data[$expectedRoot]);
-		} catch (ClientException $e) {
-			// @todo Log error
-			throw new ProductInfoUnavailableException();
-		}
-	}
+            return $this->responseSanitizer->sanitizeArray($data[$expectedRoot]);
+        } catch (ClientException $e) {
+            // @todo Log error
+            throw new ProductInfoUnavailableException();
+        }
+    }
 
-	abstract protected function inspectErrors(array $response): array;
+    abstract protected function inspectErrors(array $response): array;
 }
