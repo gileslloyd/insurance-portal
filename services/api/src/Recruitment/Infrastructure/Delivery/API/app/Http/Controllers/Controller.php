@@ -13,9 +13,9 @@ class Controller extends BaseController
      */
     protected $container;
 
-    public function __construct()
+    public function __construct(Container $container)
     {
-        $this->container = \DI\Container::instance();
+        $this->container = $container;
     }
 
     protected function apiResponse(array $content, int $code): Response

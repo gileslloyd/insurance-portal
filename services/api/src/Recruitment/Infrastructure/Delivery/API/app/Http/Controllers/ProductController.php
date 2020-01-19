@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use League\Container\Container;
 use Illuminate\Http\Request;
 use Product\ProductService;
 use Base\DomainException;
@@ -14,9 +15,9 @@ class ProductController extends Controller
      */
     private $productService;
 
-    public function __construct()
+    public function __construct(Container $container)
     {
-        parent::__construct();
+        parent::__construct($container);
 
         $this->productService = $this->container->get('product_service');
     }
